@@ -11,7 +11,8 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
         .container {
             width: 100%;
@@ -71,12 +72,17 @@
         /* রেজাল্ট কার্ড স্টাইল */
         #result-display {
             margin-top: 20px;
+            width: 100%;
+            max-width: 500px;
+            background: white;
             padding: 15px;
             border: 2px solid #1a7a3a;
-            border-radius: 8px;
+            border-radius: 12px;
             display: none;
+            box-sizing: border-box;
         }
-        .result-item { margin-bottom: 5px; border-bottom: 1px dashed #ddd; padding: 5px 0; }
+        .result-item { margin-bottom: 5px; border-bottom: 1px dashed #ddd; padding: 8px 0; font-size: 14px; }
+        .result-item b { color: #1a7a3a; }
     </style>
 </head>
 <body>
@@ -103,7 +109,7 @@
                 <select id="marhala">
                     <option value="takmil">তাকমীল</option>
                     <option value="fazilat">ফযিলত</option>
-                    <option value="sanabia_ulia">সানাবিয়া উলিয়া</option>
+                    <option value="sanabia_ulia" selected>সানাবিয়া উলিয়া</option>
                     <option value="sanabia">সানাবিয়া</option>
                     <option value="mutawassita">মুতাওয়াসসিতা</option>
                 </select>
@@ -120,22 +126,22 @@
             </div>
 
             <div class="btn-container">
-                <button type="reset" class="btn-reset">পুনরায় সেট করুন</button>
+                <button type="reset" class="btn-reset" onclick="document.getElementById('result-display').style.display='none'">পুনরায় সেট করুন</button>
                 <button type="button" onclick="showResult()" class="btn-search">অনুসন্ধান করুন</button>
             </div>
         </form>
-
-        <div id="result-display">
-            <h3 style="text-align:center; color:#1a7a3a;">পরীক্ষার ফলাফল</h3>
-            <div id="result-content"></div>
-        </div>
     </div>
+</div>
+
+<div id="result-display">
+    <h3 style="text-align:center; color:#1a7a3a; margin-top: 0;">আলহামদুলিল্লাহ, ফলাফল পাওয়া গেছে!</h3>
+    <div id="result-content"></div>
 </div>
 
 <script>
     // এখানে আপনি ডাটা কাস্টমাইজ করতে পারবেন
     const studentData = {
-        "110966-10106": {
+        "110966-10105": {
             name: "নাজমুস সাকিব",
             father: "মো.নজরুল ইসলাম",
             dob: "24-09-2008",
@@ -144,12 +150,23 @@
             avg: "৮৯",
             division: "মুমতায",
             position: "৪০তম"
+        },
+        // দ্বিতীয় ছাত্রের ডাটা (আপনি এটি পরিবর্তন করতে পারবেন)
+        "110928-10065": {
+            name: "জান্নাতুর রাইয়ান",
+            father: "মাওলানা মোস্তাকিম",
+            dob: "26-12-2005",
+            madrasa: "জামিয়া ইসলামিয়া দারুল উলুম মাদানিয়া,৩১২ দক্ষিণ যাত্রাবাড়ী, যাত্রাবাড়ী, ঢাকা (মহানগর)",
+            markaz: "জামিয়া ইসলামিয়া দারুল উলুম মাদানিয়া,৩১২ দক্ষিণ যাত্রাবাড়ী, যাত্রাবাড়ী, ঢাকা (মহানগর)",
+            avg: "৮০",
+            division: "মুমতায",
+            position: "__"
         }
     };
 
     function showResult() {
-        const roll = document.getElementById('roll').value;
-        const reg = document.getElementById('reg').value;
+        const roll = document.getElementById('roll').value.trim();
+        const reg = document.getElementById('reg').value.trim();
         const key = roll + "-" + reg;
         const resultBox = document.getElementById('result-display');
         const resultContent = document.getElementById('result-content');
@@ -167,8 +184,9 @@
                 <div class="result-item"><b>স্থান:</b> ${data.position}</div>
             `;
             resultBox.style.display = 'block';
+            window.scrollTo({ top: resultBox.offsetTop, behavior: 'smooth' });
         } else {
-            alert("দুঃখিত! এই রোল এবং রেজিস্ট্রেশন নম্বরে কোনো ফলাফল পাওয়া যায়নি।");
+            alert("দুঃখিত! এই রোল এবং রেজিস্ট্রেশন নম্বরে কোনো ফলাফল পাওয়া যায়নি। সঠিক নম্বর ইংরেজিতে লিখুন।");
             resultBox.style.display = 'none';
         }
     }
